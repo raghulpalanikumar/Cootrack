@@ -1,99 +1,177 @@
+🎫 Support Ticket System (Cootrack)
 
-# Support Ticket System
+A fully containerized Support Ticket Management System built with Django, React, and Docker, featuring AI-powered ticket classification using LLM integration.
 
-A comprehensive, containerized Support Ticket System built with **Django**, **React**, and **Docker**. It features automatic ticket categorization and prioritization using **LLM (OpenAI/Gemini)** integration.
+🚀 Overview
 
-## 🚀 Features
+This application enables teams to manage support tickets efficiently with automatic categorization and prioritization powered by Large Language Models (LLMs).
 
--   **Smart Ticket Submission**: 
-    -   Real-time AI classification of tickets based on description.
-    -   Auto-suggests **Category** (Billing, Technical, Account, General) and **Priority** (Low, Medium, High, Critical).
--   **Dynamic Dashboard**:
-    -   View live statistics: Total tickets, Open tickets, Average tickets/day.
-    -   Visual breakdowns by Priority and Category.
--   **Ticket Management**:
-    -   List view with filtering (Category, Priority, Status) and Search.
-    -   One-click status updates (e.g., Open -> In Progress).
--   **Robust Architecture**:
-    -   Fully containerized with Docker Compose.
-    -   Database-level validation and aggregation.
+The system is designed with scalability, clean architecture, and production-ready practices in mind.
 
-## 🛠️ Technology Stack
+✨ Key Features
+🧠 AI-Powered Classification
 
--   **Backend**: Django 5.0, Django REST Framework (DRF)
--   **Database**: PostgreSQL 15
--   **Frontend**: React 19 (Vite), CSS Modules
--   **AI/LLM**: OpenAI GPT-3.5 Turbo (Configurable)
--   **DevOps**: Docker, Docker Compose
+Automatically classifies tickets by:
 
-## 📋 Setup & Layout
+Category: Billing, Technical, Account, General
 
-### Prerequisites
--   Docker Desktop installed and running.
+Priority: Low, Medium, High, Critical
 
-### Quick Start
-The entire application can be spun up with a single command. The OpenAI API Key is pre-configured in `docker-compose.yml`.
+Uses OpenAI (configurable) for real-time intelligent suggestions
 
-1.  **Clone/Unzip** the project.
-2.  **Run Docker Compose**:
-    ```bash
-    docker-compose up --build
-    ```
-3.  **Access the Application**:
-    -   **Frontend (App)**: [http://localhost:3000](http://localhost:3000)
-    -   **Backend (API)**: [http://localhost:8000/api/](http://localhost:8000/api/)
-    -   **Django Admin**: [http://localhost:8000/admin/](http://localhost:8000/admin/)
+Graceful fallback if AI service is unavailable
 
-## 🧠 Design Decisions & Evaluation Criteria
+📊 Dynamic Dashboard
 
-### 1. LLM Integration
-*   **Choice**: **OpenAI GPT-3.5-turbo**.
-*   **Why**: Selected for its speed, cost-effectiveness, and high reliability in producing valid JSON outputs, which is critical for parsing the category and priority.
-*   **Implementation**: 
-    -   Implemented in `Backend/tickets/views.py`.
-    -   Uses a robust prompt to enforce JSON structure.
-    -   Includes fallback logic and markdown parsing (removes ```json blocks) to ensure the API never breaks even if the LLM adds formatting.
-    -   **Graceful Degradation**: If the API fails, the form remains usable, simply defaulting to "General" and "Low".
+Total Tickets
 
-### 2. Data Modeling
-*   **Database Constraints**: Fields like `max_length` and `choices` are defined in `models.py`.
-*   **Validation**: Django enforces these at the database level ensuring data integrity before it ever reaches the application logic.
+Open Tickets
 
-### 3. Query Logic (Performance)
-*   **No Python Loops**: Stats aggregation is performed entirely in the database using Django ORM's `aggregate`, `annotate`, `Count`, and `Avg`.
-*   **Efficiency**: This ensures that calculating stats for 100,000 tickets is as fast as for 10, relying on PostgreSQL's optimized query engine rather than iterating objects in Python.
+Average Tickets per Day
 
-### 4. Code Quality & React Structure
-*   **Component Modularity**: Frontend is split into `TicketForm`, `TicketList`, and `Dashboard`.
-*   **Hooks**: Uses `useState` and `useEffect` for clean state management.
-*   **Service Layer**: All API calls are abstracted in `api.js`, keeping components clean.
+Breakdown by Priority and Category
 
-## 🧪 API Endpoints
+Database-level aggregation for performance
 
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `POST` | `/api/tickets/` | Create a new ticket |
-| `GET` | `/api/tickets/` | List tickets (supports `?search=`, `?category=`, etc.) |
-| `GET` | `/api/tickets/stats/` | Get aggregated statistics |
-| `POST` | `/api/tickets/classify/` | AI Classification of description |
-| `PATCH` | `/api/tickets/<id>/` | Update ticket status |
+🗂 Ticket Management
 
-## 📁 Project Structure
+Create, list, and update tickets
 
-```
+Search functionality
+
+Filter by category, priority, and status
+
+One-click status updates
+
+🐳 Containerized Architecture
+
+Fully Dockerized backend, frontend, and database
+
+One-command startup using Docker Compose
+
+Environment variable–based configuration
+
+🛠️ Technology Stack
+Layer	Technology
+Backend	Django 5 + Django REST Framework
+Database	PostgreSQL 15
+Frontend	React (Vite)
+AI/LLM	OpenAI GPT (configurable)
+DevOps	Docker, Docker Compose
+📦 Architecture
+
+Backend API handles business logic and AI integration
+
+PostgreSQL ensures data integrity with constraints
+
+React Frontend consumes REST APIs
+
+Docker Compose orchestrates services
+
+⚙️ Setup & Installation
+🔹 Prerequisites
+
+Docker Desktop installed and running
+
+Valid OpenAI API key
+
+🔹 Environment Configuration
+
+Create a .env file in the root directory:
+
+OPENAI_API_KEY=your_api_key_here
+POSTGRES_DB=cootrack
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+
+
+⚠️ Never commit .env files to version control.
+
+🔹 Run the Application
+docker-compose up --build
+
+
+Once running:
+
+Frontend: http://localhost:3000
+
+Backend API: http://localhost:8000/api/
+
+Django Admin: http://localhost:8000/admin/
+
+🧪 API Endpoints
+Method	Endpoint	Description
+POST	/api/tickets/	Create ticket
+GET	/api/tickets/	List tickets (search & filter supported)
+GET	/api/tickets/stats/	Aggregated dashboard statistics
+POST	/api/tickets/classify/	AI classification
+PATCH	/api/tickets/<id>/	Update ticket
+🧠 Design Decisions
+LLM Integration
+
+Uses structured JSON prompts to ensure reliable parsing
+
+Handles formatting inconsistencies (e.g., markdown-wrapped JSON)
+
+Includes graceful degradation if API fails
+
+Database Optimization
+
+Aggregations performed using Django ORM (Count, Avg, annotate)
+
+No Python loops for statistics
+
+Ensures performance scalability
+
+Frontend Architecture
+
+Modular components:
+
+TicketForm
+
+TicketList
+
+Dashboard
+
+API abstraction layer (api.js)
+
+Clean state management using React hooks
+
+📁 Project Structure
 ├── Backend/
-│   ├── tickets/          # Django App
-│   │   ├── models.py     # Database Schema
-│   │   ├── views.py      # Logic & LLM Integration
+│   ├── tickets/
+│   │   ├── models.py
+│   │   ├── views.py
 │   │   └── ...
 │   ├── Dockerfile
 │   └── requirements.txt
 ├── frontend/
 │   ├── src/
-│   │   ├── components/   # React Components
-│   │   ├── api.js        # API Utilities
+│   │   ├── components/
+│   │   ├── api.js
 │   │   └── ...
 │   └── Dockerfile
-└── docker-compose.yml    # Orchestration
-```
-"# Cootrack" 
+├── docker-compose.yml
+└── README.md
+
+🔐 Security Notes
+
+API keys are managed via environment variables.
+
+No secrets are stored in version control.
+
+PostgreSQL credentials are configurable via .env.
+
+📈 Scalability Considerations
+
+Stateless backend containers
+
+Database-driven aggregation
+
+Clean separation between UI and API
+
+Docker-ready for production deployment
+
+👨‍💻 Author
+
+Raghul Palanikumar

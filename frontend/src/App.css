@@ -105,9 +105,11 @@ body {
   font-size: 0.95rem;
 }
 
-.nav-link:hover {
+.nav-link:hover,
+.nav-link.active {
   color: var(--primary);
   background-color: var(--primary-light);
+  font-weight: 600;
 }
 
 .nav-link.btn-tickets {
