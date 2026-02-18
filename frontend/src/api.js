@@ -19,19 +19,23 @@ export const classifyTicket = async (description) => {
 };
 
 export const createTicket = async (ticketData) => {
-  return await api.post('tickets/', ticketData);
+  const response = await api.post('tickets/', ticketData);
+  return response.data;
 };
 
 export const getTickets = async (params) => {
-  return await api.get('tickets/', { params });
+  const response = await api.get('tickets/', { params });
+  return response.data;
 };
 
 export const updateTicket = async (id, data) => {
-  return await api.patch(`tickets/${id}/`, data);
+  const response = await api.patch(`tickets/${id}/`, data);
+  return response.data; // Ensure this returns data, though update might not use it directly
 };
 
 export const getStats = async () => {
-  return await api.get('tickets/stats/');
+  const response = await api.get('tickets/stats/');
+  return response.data;
 };
 
 export default api;
