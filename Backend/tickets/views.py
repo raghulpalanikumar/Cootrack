@@ -101,8 +101,8 @@ class ClassifyView(APIView):
                     text = text.split("```")[1].split("```")[0]
                 
                 data = json.loads(text.strip())
-                suggested_category = data.get('category', 'general').lower()
-                suggested_priority = data.get('priority', 'low').lower()
+                suggested_category = str(data.get('category', 'general')).lower()
+                suggested_priority = str(data.get('priority', 'low')).lower()
 
             elif openai_key:
                 headers = {
@@ -130,13 +130,23 @@ class ClassifyView(APIView):
                         content = content.split("```")[1].split("```")[0]
                     
                     data = json.loads(content.strip())
-                    suggested_category = data.get('category', 'general').lower()
-                    suggested_priority = data.get('priority', 'low').lower()
+                    suggested_category = str(data.get('category', 'general')).lower()
+                    suggested_priority = str(data.get('priority', 'low')).lower()
                 else:
                     logger.error(f"OpenAI Error: {response.text}")
         except Exception as e:
             logger.error(f"LLM Error: {e}")
             pass
+
+        # Validate against choices
+        valid_categories = [c[0] for c in Ticket.CATEGORY_CHOICES]
+        valid_priorities = [c[0] for c in Ticket.PRIORITY_CHOICES]
+
+        if suggested_category not in valid_categories:
+            suggested_category = 'general'
+        
+        if suggested_priority not in valid_priorities:
+            suggested_priority = 'low'
 
         return Response({
             "suggested_category": suggested_category,

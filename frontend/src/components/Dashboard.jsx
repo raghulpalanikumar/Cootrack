@@ -4,20 +4,20 @@ import { getStats } from '../api';
 const Dashboard = () => {
     const [stats, setStats] = useState(null);
 
-    useEffect(() => {
-        fetchStats();
-        const interval = setInterval(fetchStats, 30000); // Auto-refresh every 30s
-        return () => clearInterval(interval);
-    }, []);
-
     const fetchStats = async () => {
         try {
-            const response = await getStats();
-            if (response && response.data) setStats(response.data);
+            const data = await getStats();
+            setStats(data);
         } catch (error) {
             console.error('Error fetching stats:', error);
         }
     };
+
+    useEffect(() => {
+        fetchStats();
+        const interval = setInterval(fetchStats, 5000); // Poll every 5 seconds for updates
+        return () => clearInterval(interval);
+    }, []);
 
     if (!stats) return <div>Loading Stats...</div>;
 
