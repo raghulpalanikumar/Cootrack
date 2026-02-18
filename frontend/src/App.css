@@ -57,7 +57,7 @@ body {
 
 /* Layout */
 .app-container {
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
@@ -83,6 +83,7 @@ body {
   font-size: 1.25rem;
   font-weight: 700;
   background: linear-gradient(135deg, var(--primary) 0%, #818cf8 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.025em;
@@ -135,8 +136,9 @@ body {
   box-shadow: var(--shadow-md);
   border: 1px solid var(--border);
   transition: transform 0.2s, box-shadow 0.2s;
-  max-width: 800px;
-  /* Constrain form width */
+  width: 100%;
+  max-width: none;
+  /* Allow full width in grid contexts */
 }
 
 /* Form Styling */
@@ -271,8 +273,9 @@ label {
 /* Dashboard */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
 }
 
 .stat-card {
@@ -375,8 +378,8 @@ label {
 
 .tickets-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 2rem;
 }
 
 .ticket-card {
@@ -490,5 +493,24 @@ label {
   .search-input,
   .filters-bar select {
     width: 100%;
+  }
+}
+
+/* Large Screens (Laptop L & Desktop) */
+@media (min-width: 1400px) {
+  .app-container {
+    max-width: 90vw;
+  }
+
+  .app-content {
+    padding: 3rem 4rem;
+  }
+
+  .stat-value {
+    font-size: 3.5rem;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
